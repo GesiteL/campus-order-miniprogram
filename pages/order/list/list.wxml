@@ -1,0 +1,25 @@
+<!-- 订单列表页 -->
+<view class="order-list">
+
+  <view class="order-card" wx:for="{{orders}}" wx:key="order_id"
+    data-id="{{item.order_id}}" bindtap="goDetail">
+    <view class="order-head">
+      <text class="order-food">{{item.foods[0].name}}</text>
+      <text class="order-state {{item.taken ? 'taken' : 'wait'}}">
+        {{item.taken ? '已取餐' : '待取餐'}}
+      </text>
+    </view>
+    <view class="order-sub">{{item.foods[0].describe}}</view>
+    <view class="order-foot">
+      <text class="order-time">{{item.foods[0].date}} {{item.foods[0].time}}</text>
+      <text class="order-money">¥{{item.foods[0].money}}</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 / 到底提示 -->
+  <view class="load-tip" wx:if="{{loading}}">加载中...</view>
+  <view class="load-tip" wx:elif="{{isLast && orders.length > 0}}">— 没有更多了 —</view>
+
+  <!-- 空状态 -->
+  <view class="empty-tip" wx:if="{{!loading && orders.length === 0}}">暂无订单</view>
+</view>

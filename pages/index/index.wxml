@@ -1,0 +1,30 @@
+<!-- 首页 -->
+<view class="index">
+
+  <!-- 轮播图 -->
+  <swiper class="banner" indicator-dots="{{true}}" autoplay="{{true}}" interval="3000" circular="{{true}}"
+    indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#ffffff">
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image class="banner-img" src="{{item.src}}" mode="aspectFill" />
+    </swiper-item>
+  </swiper>
+
+  <!-- 中部广告 + 引导入口 -->
+  <view class="lead">
+    <image class="lead-img" src="{{imageAd}}" mode="widthFix" wx:if="{{imageAd}}" />
+    <view class="lead-btn btn-primary" bindtap="goList">开启点餐之旅</view>
+  </view>
+
+  <!-- 推荐商品 -->
+  <view class="section-title">
+    <text class="bar"></text>
+    <text>为你推荐</text>
+  </view>
+  <view class="recommend">
+    <view class="recommend-item" wx:for="{{recommends}}" wx:key="id" bindtap="goList">
+      <image class="recommend-img" src="{{item.src}}" mode="aspectFill" />
+    </view>
+  </view>
+
+  <view class="empty-tip" wx:if="{{recommends.length === 0}}">暂无推荐，请确认后端服务已启动</view>
+</view>

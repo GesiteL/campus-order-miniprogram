@@ -1,0 +1,69 @@
+/* 首页样式 */
+.index {
+  padding-bottom: 40rpx;
+}
+
+.banner {
+  width: 100%;
+  height: 320rpx;
+}
+.banner-img {
+  width: 100%;
+  height: 320rpx;
+  display: block;
+}
+
+.lead {
+  margin: 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+.lead-img {
+  width: 100%;
+  border-radius: 12rpx;
+  display: block;
+}
+.lead-btn {
+  margin-top: 24rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 24rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+.section-title .bar {
+  width: 8rpx;
+  height: 32rpx;
+  background: #ff6b35;
+  border-radius: 4rpx;
+  margin-right: 12rpx;
+}
+
+.recommend {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12rpx;
+}
+.recommend-item {
+  width: 50%;
+  padding: 12rpx;
+  box-sizing: border-box;
+}
+.recommend-img {
+  width: 100%;
+  height: 260rpx;
+  border-radius: 12rpx;
+  display: block;
+  background: #eee;
+}

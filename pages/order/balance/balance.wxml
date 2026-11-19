@@ -1,0 +1,34 @@
+<!-- 订单确认页 -->
+<view class="balance">
+
+  <!-- 商品清单 -->
+  <view class="card">
+    <view class="card-title">商品清单</view>
+    <view class="order-item" wx:for="{{cartList}}" wx:key="id">
+      <view class="order-name">{{item.name}}</view>
+      <view class="order-right">
+        <text class="order-price">¥{{item.price}}</text>
+        <text class="order-num">x{{item.num}}</text>
+      </view>
+    </view>
+    <view class="empty-tip" wx:if="{{cartList.length === 0}}">购物车为空</view>
+
+    <view class="order-total" wx:if="{{cartList.length > 0}}">
+      <text>共 {{totalCount}} 件</text>
+      <text>合计：<text class="total-price">¥{{totalPrice}}</text></text>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="card">
+    <view class="card-title">备注</view>
+    <textarea class="remark" placeholder="口味、忌口等特殊要求（选填）"
+      value="{{remark}}" bindinput="onRemarkInput" maxlength="100" />
+  </view>
+
+  <!-- 提交栏 -->
+  <view class="submit-bar">
+    <view class="submit-total">合计 <text class="total-price">¥{{totalPrice}}</text></view>
+    <view class="submit-btn" bindtap="submitOrder">提交订单</view>
+  </view>
+</view>

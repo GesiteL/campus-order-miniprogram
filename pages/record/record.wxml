@@ -1,0 +1,26 @@
+<!-- 消费记录页 -->
+<view class="record">
+
+  <!-- 顶部个人信息 + 累计消费 -->
+  <view class="profile">
+    <image class="avatar" src="{{avatar}}" mode="aspectFill" />
+    <view class="profile-info">
+      <view class="nickname">校园点餐用户</view>
+      <view class="total-label">累计消费 <text class="total-money">¥{{total}}</text></view>
+    </view>
+  </view>
+
+  <!-- 消费记录列表 -->
+  <view class="section-title">消费记录</view>
+  <view class="record-list">
+    <view class="record-item" wx:for="{{records}}" wx:key="record_id">
+      <view class="record-left">
+        <view class="record-title">消费订单 #{{item.record_id}}</view>
+        <view class="record-time">{{item.date}} {{item.time}}</view>
+      </view>
+      <view class="record-money">-¥{{item.summoney}}</view>
+    </view>
+
+    <view class="empty-tip" wx:if="{{records.length === 0}}">暂无消费记录</view>
+  </view>
+</view>

@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/list/list",
+    "pages/order/balance/balance",
+    "pages/order/detail/detail",
+    "pages/order/list/list",
+    "pages/record/record"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "backgroundColor": "#f5f5f5",
+    "navigationBarBackgroundColor": "#ff6b35",
+    "navigationBarTitleText": "校园点餐",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#ff6b35",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/images/home.png",
+        "selectedIconPath": "images/images/home_s.png"
+      },
+      {
+        "pagePath": "pages/order/list/list",
+        "text": "订单",
+        "iconPath": "images/images/order.png",
+        "selectedIconPath": "images/images/order_s.png"
+      },
+      {
+        "pagePath": "pages/record/record",
+        "text": "我的",
+        "iconPath": "images/images/user.png",
+        "selectedIconPath": "images/images/user_s.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
