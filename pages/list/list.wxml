@@ -1,0 +1,107 @@
+<!-- 菜品菜单页 -->
+<view class="page">
+
+  <!-- 顶部优惠栏 -->
+  <view class="promo-bar">
+    <text class="promo-tag">优惠</text>
+    <text>满 50 减 10 · 新客立减 · 免配送费</text>
+  </view>
+
+  <!-- 搜索栏（改造新增） -->
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索菜品" value="{{searchKeyword}}" bindinput="onSearchInput" />
+  </view>
+
+  <!-- 主体：左分类 + 右菜品 -->
+  <view class="main">
+
+    <!-- 左侧分类 -->
+    <scroll-view class="cate-list" scroll-y="{{true}}">
+      <view wx:for="{{categories}}" wx:key="name"
+        class="cate-item {{activeIndex === index ? 'active' : ''}}"
+        data-index="{{index}}" bindtap="onCategoryTap">
+        {{item.name}}
+      </view>
+      <view class="cate-add" bindtap="openCustomModal">＋ 自定义</view>
+    </scroll-view>
+
+    <!-- 右侧菜品 -->
+    <scroll-view class="food-scroll" scroll-y="{{true}}"
+      scroll-into-view="{{scrollIntoView}}" scroll-with-animation="{{true}}"
+      bindscroll="onFoodScroll">
+      <view wx:for="{{list}}" wx:for-item="cate" wx:for-index="cIndex" wx:key="name"
+        class="cate-section" id="cate-{{cIndex}}">
+        <view class="cate-section-title">{{cate.name}}</view>
+
+        <view class="food-item" wx:for="{{cate.foods}}" wx:for-item="food" wx:key="id"
+          bindlongpress="{{cate.name === '自定义' ? 'onFoodLongPress' : ''}}"
+          data-food="{{food}}">
+          <image class="food-img" src="{{food.image}}" mode="aspectFill" />
+          <view class="food-info">
+            <view class="food-name">{{food.name}}<text wx:if="{{food.custom}}" class="custom-tag">自定义</text></view>
+            <view class="food-desc">{{food.desc}}</view>
+            <view class="food-meta">月售{{food.month_sales}} · 评分{{food.rating}}<text wx:if="{{food.custom}}" class="custom-hint"> · 长按可编辑</text></view>
+            <view class="food-bottom">
+              <text class="food-price">¥{{food.price}}</text>
+
+              <!-- 数量控制：已在购物车显示 - 数量 +，否则仅显示 + -->
+              <stepper count="{{counts[food.id]}}" food="{{food}}" bindchange="onStepperChange" />
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty-tip" wx:if="{{list.length === 0}}">暂无菜品，请确认后端服务已启动</view>
+      <view style="height: 140rpx;"></view>
+    </scroll-view>
+  </view>
+
+  <!-- 购物车面板遮罩 -->
+  <view class="cart-mask" wx:if="{{showCart}}" bindtap="hideCart"></view>
+
+  <!-- 购物车面板 -->
+  <view class="cart-panel {{showCart ? 'show' : ''}}" catchtap="stopPropagation">
+    <view class="cart-panel-head">
+      <text class="cart-panel-title">已选商品</text>
+      <view class="cart-clear" bindtap="clearCart">清空</view>
+    </view>
+    <scroll-view class="cart-panel-list" scroll-y="{{true}}">
+      <view class="cart-row" wx:for="{{cartList}}" wx:key="id">
+        <view class="cart-row-name">{{item.name}}</view>
+        <view class="cart-row-right">
+          <text class="cart-row-price">¥{{item.price}}</text>
+          <stepper count="{{item.num}}" food="{{item}}" bindchange="onStepperChange" />
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部购物车结算栏 -->
+  <view class="cart-bar">
+    <view class="cart-icon-wrap {{totalCount > 0 ? 'active' : ''}}" bindtap="toggleCart">
+      <view class="cart-icon">车</view>
+      <view class="cart-badge" wx:if="{{totalCount > 0}}">{{totalCount}}</view>
+    </view>
+    <view class="cart-total">
+      <text wx:if="{{totalCount > 0}}" class="cart-total-price">¥{{totalPrice}}</text>
+      <text wx:else class="cart-total-empty">购物车是空的</text>
+    </view>
+    <view class="cart-checkout {{totalCount > 0 ? '' : 'disabled'}}" bindtap="goBalance">选好了</view>
+  </view>
+
+  <!-- 自定义菜品弹层遮罩 -->
+  <view class="modal-mask" wx:if="{{showCustomModal}}" bindtap="closeCustomModal"></view>
+
+  <!-- 自定义菜品弹层 -->
+  <view class="modal-panel" wx:if="{{showCustomModal}}" catchtap="stopPropagation">
+    <view class="modal-title">{{editingId ? '编辑自定义菜品' : '新建自定义菜品'}}</view>
+    <input class="modal-input" placeholder="菜名（必填）" value="{{formName}}" bindinput="onCustomNameInput" />
+    <input class="modal-input" placeholder="价格（必填，如 12.5）" type="digit" value="{{formPrice}}" bindinput="onCustomPriceInput" />
+    <input class="modal-input" placeholder="描述（选填）" value="{{formDesc}}" bindinput="onCustomDescInput" />
+    <view class="modal-actions">
+      <view class="modal-btn cancel" bindtap="closeCustomModal">取消</view>
+      <view class="modal-btn ok" bindtap="submitCustom">保存</view>
+    </view>
+  </view>
+
+</view>

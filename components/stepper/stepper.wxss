@@ -1,0 +1,29 @@
+.stepper {
+  display: flex;
+  align-items: center;
+}
+.step-btn {
+  width: 48rpx;
+  height: 48rpx;
+  line-height: 44rpx;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 36rpx;
+}
+.step-btn.plus {
+  background: #ff6b35;
+  color: #fff;
+}
+.step-btn.minus {
+  background: #fff;
+  color: #ff6b35;
+  border: 1rpx solid #ff6b35;
+}
+.step-num {
+  min-width: 48rpx;
+  text-align: center;
+  font-size: 28rpx;
+}
+.hide {
+  visibility: hidden;
+}

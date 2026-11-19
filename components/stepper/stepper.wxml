@@ -1,0 +1,5 @@
+<view class="stepper">
+  <view class="step-btn minus {{count > 0 ? '' : 'hide'}}" catchtap="onMinus">-</view>
+  <text class="step-num {{count > 0 ? '' : 'hide'}}">{{count}}</text>
+  <view class="step-btn plus" catchtap="onPlus">+</view>
+</view>
