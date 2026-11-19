@@ -1,3 +1,10 @@
 node_modules/
 .project
 project.private.config.json
+.idea/
+.vscode/
+.DS_Store
+*.log
+
+# 源码汇总文件，仅在本地保留，不入库
+project_source.md

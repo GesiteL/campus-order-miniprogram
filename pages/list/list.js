@@ -124,7 +124,10 @@ Page({
     }
     this.setData({
       list: source,
-      categories: source.map((c) => ({ name: c.name }))
+      categories: source.map((c) => ({ name: c.name })),
+      // 过滤后分类数量可能变化，重置高亮与锚点，避免高亮错位
+      activeIndex: 0,
+      scrollIntoView: ''
     }, () => {
       this.computeSectionTops();
     });
@@ -146,9 +149,9 @@ Page({
   // 点击左侧分类：高亮 + 右侧滚动到对应区块
   onCategoryTap(e) {
     const index = e.currentTarget.dataset.index;
-    this.setData({
-      activeIndex: index,
-      scrollIntoView: 'cate-' + index
+    // 先清空锚点再设置，保证连续点击同一分类也能滚动
+    this.setData({ activeIndex: index, scrollIntoView: '' }, () => {
+      this.setData({ scrollIntoView: 'cate-' + index });
     });
   },
 
@@ -326,9 +329,10 @@ Page({
     wx.showToast({ title: '已保存', icon: 'success' });
   },
 
-  // 长按自定义菜品：弹出编辑/删除菜单
+  // 长按自定义菜品：弹出编辑/删除菜单（普通菜品不响应）
   onFoodLongPress(e) {
     const food = e.currentTarget.dataset.food;
+    if (!food || !food.custom) return;
     wx.showActionSheet({
       itemList: ['编辑', '删除'],
       success: (res) => {

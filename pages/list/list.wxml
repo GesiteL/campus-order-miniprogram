@@ -34,7 +34,7 @@
         <view class="cate-section-title">{{cate.name}}</view>
 
         <view class="food-item" wx:for="{{cate.foods}}" wx:for-item="food" wx:key="id"
-          bindlongpress="{{cate.name === '自定义' ? 'onFoodLongPress' : ''}}"
+          bindlongpress="onFoodLongPress"
           data-food="{{food}}">
           <image class="food-img" src="{{food.image}}" mode="aspectFill" />
           <view class="food-info">
@@ -45,7 +45,7 @@
               <text class="food-price">¥{{food.price}}</text>
 
               <!-- 数量控制：已在购物车显示 - 数量 +，否则仅显示 + -->
-              <stepper count="{{counts[food.id]}}" food="{{food}}" bindchange="onStepperChange" />
+              <stepper count="{{counts[food.id] || 0}}" food="{{food}}" bindchange="onStepperChange" />
             </view>
           </view>
         </view>

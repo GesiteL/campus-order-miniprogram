@@ -27,8 +27,16 @@ function sendFirstItem(res, filename) {
             res.end(JSON.stringify({error: 1, message: 'read ' + filename + ' failed'}));
             return;
         }
-        res.writeHead(200, {'Content-Type': 'application/json;charset=utf-8'});
-        res.end(JSON.stringify(JSON.parse(data)[0]));
+        try {
+            var list = JSON.parse(data);
+            res.writeHead(200, {'Content-Type': 'application/json;charset=utf-8'});
+            res.end(JSON.stringify(list[0] || {}));
+        } catch (e) {
+            // JSON 损坏时返回 500，避免回调抛异常导致进程退出
+            console.error('parse ' + filename + ' failed:', e.message);
+            res.writeHead(500, {'Content-Type': 'application/json;charset=utf-8'});
+            res.end(JSON.stringify({error: 1, message: 'parse ' + filename + ' failed'}));
+        }
     });
 }
 
