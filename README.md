@@ -1,0 +1,57 @@
+# 校园点餐小程序
+
+## 简介
+
+基于微信小程序原生框架 + Node.js Express 本地模拟后端的校园点餐应用，源自课堂作业改造。前端 6 个页面覆盖首页、菜单、订单确认、订单详情、订单列表、消费记录；后端读取本地 JSON 文件返回数据，购物车用 `wx.setStorageSync` 本地持久化。
+
+## 项目特性
+
+- 6 页面完整点餐流程（首页/菜单/订单确认/订单详情/订单列表/消费记录）
+- 菜单页分类双向联动 + 游标分页订单列表
+- 购物车本地持久化，跨页状态同步
+- 自定义菜品：本地定义、编辑、删除，无需后端
+- 菜品搜索：按名实时过滤
+- 组件化数量控制器（stepper）
+- 统一请求封装（Promise + 超时 + 错误分类提示）
+
+## 快速开始
+
+1. 启动后端：`cd order_server/order_server`，执行 `npm install`（首次）后 `node exp.js`，控制台打印 `order server listening on http://127.0.0.1:8081` 即启动成功。
+2. 微信开发者工具导入本目录（项目自带 AppID，无需改动），因请求 `127.0.0.1` 需保持 `urlCheck:false`（不校验合法域名）。
+3. 按「首页 → 菜单选餐加购 → 结算支付 → 订单详情 → 订单列表 → 消费记录」流程预览。
+
+## 改造新增
+
+### 自定义菜品（原课堂作业没有）
+
+- 数据存 `wx.setStorageSync('customFoods')`，不经过后端；左分类栏底部「＋ 自定义」入口打开新建/编辑弹层。
+- 可新建（菜名必填、价格必须为正数）、长按自定义菜品编辑/删除；删除时同步把该菜移出购物车。
+- 自定义菜品在列表中带橙色「自定义」角标，长按提示可编辑。
+
+### 工程化改造
+
+- 配置中心化：`config.js` 统一 `BASE_URL` / `APP_NAME` / `VERSION`，`fetch.js` 与 `app.js` 引用它。
+- 请求层加固：`timeout: 8000`；非 2xx toast「服务器错误 <状态码>」；网络失败 toast「网络错误，请检查后端服务」。
+- 组件化：`components/stepper/` 统一数量控制器，页面通过 `change` 事件更新购物车。
+- 菜单搜索：按菜名子串实时过滤，空分类隐藏，清空关键字恢复全量，原数据副本 `fullList` 不被破坏。
+- 后端修复：`readFile` 错误分支返回 500 而非挂起；`app.listen` 增加启动日志；删除调试残留；`body-parser` 显式声明依赖。
+
+## 接口实测表（本地运行实测）
+
+| 方法 | 路径 | 实测状态码 | 说明 |
+|---|---|---|---|
+| GET | /api/food/index | 200 | 首页轮播/广告/推荐 |
+| GET | /api/food/list | 200 | 菜单分类与菜品 |
+| GET | /api/food/orderlist | 200 | 订单第一页（last_id=10） |
+| GET | /api/food/orderlist?last_id=10 | 200 | 订单第二页（last_id=20） |
+| GET | /api/food/orderlist?last_id=20 | 200 | 订单第三页（last_id=30，is_last=true） |
+| GET | /api/food/order?order_id=3 | 200 | 订单详情（静态示例，忽略 order_id） |
+| GET | /api/food/record | 200 | 消费记录 |
+| POST | /api/food/order | 200 | 下单模拟：返回 `{"error":0,"order_id":3}` |
+| POST | /api/food/pay | 200 | 支付模拟：返回 `{"error":0,"order_id":3}` |
+
+## 常见问题
+
+- 启动 node exp.js 后控制台没有输出？→ 旧版无启动日志；本仓库版已加 listen 回调，启动后应打印 listening 提示
+- 真机预览连不上后端？→ 接口地址为 127.0.0.1，须本机先启动后端，项目已设 urlCheck:false
+- 部分菜品图是灰色占位？→ 原数据即使用占位图，自定义菜品同样使用占位图，属预期行为
